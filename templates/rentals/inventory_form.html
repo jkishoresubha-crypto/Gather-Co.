@@ -1,0 +1,5 @@
+{% extends "rentals/base.html" %}
+{% block title %}{% if item %}Edit{% else %}Add{% endif %} inventory | Gather & Co.{% endblock %}
+{% block content %}
+<section class="auth-wrap wide-form"><div class="auth-card"><p class="eyebrow">Owner studio</p><h1>{% if item %}Edit {{ item.name }}{% else %}Add to your collection{% endif %}</h1><form method="post" enctype="multipart/form-data" class="form-stack">{% csrf_token %}{% for field in form %}<label class="form-field"><span>{{ field.label }}</span>{{ field }}{% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}{% for error in field.errors %}<small class="form-error">{{ error }}</small>{% endfor %}</label>{% endfor %}<div class="form-actions"><button class="button" type="submit">Save item</button><a class="button button-outline" href="{% url 'dashboard' %}">Cancel</a></div></form></div></section>
+{% endblock %}

@@ -1,0 +1,3 @@
+{% extends "rentals/base.html" %}
+{% block title %}{{ title }} | Gather & Co.{% endblock %}
+{% block content %}<section class="message-page wrap"><span class="message-flower">✿</span><p class="eyebrow">A little pause</p><h1>{{ title }}</h1><p class="muted">{{ message }}</p><a class="button" href="{% url 'home' %}">Back to home</a></section>{% endblock %}

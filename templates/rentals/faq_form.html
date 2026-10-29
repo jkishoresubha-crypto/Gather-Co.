@@ -1,0 +1,3 @@
+{% extends "rentals/base.html" %}
+{% block title %}Manage FAQ | Gather & Co.{% endblock %}
+{% block content %}<section class="auth-wrap"><div class="auth-card"><p class="eyebrow">Owner studio</p><h1>{% if faq %}Edit FAQ{% else %}Add a helpful answer{% endif %}</h1><form method="post" class="form-stack">{% csrf_token %}{% for field in form %}<label class="form-field"><span>{{ field.label }}</span>{{ field }}{% for error in field.errors %}<small class="form-error">{{ error }}</small>{% endfor %}</label>{% endfor %}<button class="button" type="submit">Save FAQ</button></form></div></section>{% endblock %}

@@ -1,0 +1,5 @@
+{% extends "rentals/base.html" %}
+{% block title %}Reserve {{ item.name }} | Gather & Co.{% endblock %}
+{% block content %}
+<section class="form-page wrap"><div class="form-main"><p class="eyebrow">Save your date</p><h1>Request a reservation</h1><p class="muted">The owner will review your request and confirm availability.</p><form method="post" class="form-stack">{% csrf_token %}{% for field in form %}<label class="form-field"><span>{{ field.label }}</span>{{ field }}{% for error in field.errors %}<small class="form-error">{{ error }}</small>{% endfor %}</label>{% endfor %}<button class="button" type="submit">Send reservation request</button></form></div><aside class="summary-card"><p class="eyebrow">Your selection</p><h2>{{ item.name }}</h2><p>₹{{ item.rental_price }} / day</p><p>Deposit ₹{{ item.security_deposit }} / item</p><p class="small-note">Rental total is calculated as quantity × daily rate × rental days, plus the refundable deposit.</p></aside></section>
+{% endblock %}

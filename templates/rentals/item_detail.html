@@ -1,0 +1,8 @@
+{% extends "rentals/base.html" %}
+{% block title %}{{ item.name }} | Gather & Co.{% endblock %}
+{% block content %}
+<section class="detail-layout wrap section">
+    <div class="detail-image">{% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}">{% elif item.image_url %}<img src="{{ item.image_url }}" alt="{{ item.name }}">{% else %}<div class="item-art"><span class="item-art-icon">{% if item.category %}{{ item.category.name|slice:":1" }}{% else %}✦{% endif %}</span><span class="art-caption">{{ item.name }}</span></div>{% endif %}</div>
+    <div class="detail-copy">{% if item.category %}<p class="eyebrow">{{ item.category.name }}</p>{% endif %}<h1>{{ item.name }}</h1><p class="detail-description">{{ item.description }}</p><div class="price-line"><strong>₹{{ item.rental_price }}</strong><span>per day</span></div><div class="detail-facts"><span><b>{{ available }}</b> available today</span><span><b>₹{{ item.security_deposit }}</b> deposit per item</span></div><a class="button" href="{% url 'reserve-item' item.slug %}">Choose dates & reserve ↗</a><p class="small-note">Your reservation is only confirmed after the owner approves it.</p></div>
+</section>
+{% endblock %}
