@@ -46,7 +46,7 @@ Copy `.env.example` to `.env` and set values for your environment. `.env` is ign
 
 | Variable | Purpose |
 |---|---|
-| `SECRET_KEY` | Django signing key; use a strong unique value in production |
+| `SECRET_KEY` | Django signing key; development generates a temporary key if missing/placeholder, while production requires a unique configured value |
 | `DEBUG` | Enable Django debug mode locally only |
 | `ALLOWED_HOSTS` | Comma-separated hostnames |
 | `DATABASE_URL` | SQLite URL by default; a PostgreSQL URL can be supplied for production |
