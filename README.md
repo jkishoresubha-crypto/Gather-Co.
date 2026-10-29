@@ -163,31 +163,40 @@ python manage.py test
 
 Tests cover account flows, role permissions, date availability and overbooking, FAQ retrieval, assistant escalation, error pages, health, and weather fallback.
 
-## Deployment
+## Deploy a free demo on Render
 
-1. Use a managed PostgreSQL database and set `DATABASE_URL`.
-2. Set `DEBUG=False`, `SECRET_KEY`, `ALLOWED_HOSTS`, HTTPS, and optional Mongo/cache settings in the host's secret manager.
-3. Install `requirements.txt`; run `python manage.py migrate`.
-4. Collect static files with `python manage.py collectstatic --noinput`.
-5. Run the Django WSGI/ASGI application using the host's supported process manager.
-6. Configure persistent media storage for inventory uploads and run health checks at `/health/`.
-7. Do not run `seed_demo` on a public production deployment.
+The repository includes a Render Blueprint in `render.yaml`. To deploy:
+
+1. Push the latest `main` branch to GitHub.
+2. Sign in at [Render](https://dashboard.render.com/) and choose **New → Blueprint**.
+3. Connect the GitHub repository `jkishoresubha-crypto/Gather-Co..` and apply the `render.yaml` blueprint. Render builds the app, collects static files, runs database migrations at startup, and uses `/health/` as the health check.
+4. Wait for the first deploy to finish and open the `.onrender.com` URL Render shows for the service.
+5. In the Render service's **Shell**, create your own administrator/owner account with `python manage.py createsuperuser`. Use that account to add inventory, FAQs, and error codes in Django admin (`/admin/`).
+
+### Important limitations of the free demo
+
+- The blueprint uses SQLite on the free web service's ephemeral filesystem. **Data can be lost when the service restarts, sleeps, or redeploys.** Do not use this configuration for real reservations or customer data. Move to a managed PostgreSQL database before accepting real customers.
+- Uploaded item files also live on ephemeral storage in this setup and can disappear. Use persistent object storage for production uploads; item image URLs can be used for a demo.
+- Free web services may sleep when idle and take time to wake up. Availability and free-tier terms can change; review Render's current plan and pricing before applying the blueprint.
+- Do not run `python manage.py seed_demo` on a public deployment: it creates accounts with documented demo passwords. Create a unique admin account instead.
+- MongoDB chat persistence and AI API answers remain optional. Configure `MONGODB_URI` and/or `AI_API_KEY` through the Render service's environment settings if needed; never put secrets in `render.yaml`.
+
+### Production deployment checklist
+
+For a real public service, use persistent PostgreSQL, a shared production cache such as Redis for rate limits, durable object storage for uploads, a unique secret key, restricted allowed hosts, and appropriate backups. Configure `DATABASE_URL`, `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, and provider secrets in Render's environment settings. Verify `/health/` and test registration, reservations, cancellations, support, static assets, and backups before sharing the site with customers.
 
 ## GitHub
 
-The project is prepared with `.gitignore` and `.env.example`. From this folder, create a private/public repository on GitHub, then use:
+This project is already initialized on `main` and connected to its GitHub repository. To publish later changes:
 
 ```powershell
-git init
 git add .
 git status
-git commit -m "Create Gather event inventory rental app"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
-git push -u origin main
+git commit -m "Describe your change"
+git push
 ```
 
-Before committing, confirm `.env`, database files, uploaded media, and credentials are not staged. Substitute your own repository URL.
+If you intentionally want to publish this project to a different repository, create that repository first, then update the `origin` remote with its clone URL. Before committing, confirm `.env`, database files, uploaded media, and credentials are not staged. The `.gitignore` excludes local secrets and generated files.
 
 ## Proposed Future Improvement
 
